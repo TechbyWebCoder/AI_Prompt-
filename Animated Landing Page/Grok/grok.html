@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Animated Landing Page</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            scroll-behavior: smooth; /* Smooth scroll effect */
+        }
+
+        /* Header Styles */
+        header {
+            position: fixed;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        nav ul li a:hover {
+            color: #ff6347;
+        }
+
+        /* Hero Section */
+        #hero {
+            height: 100vh;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+            padding: 0 1rem;
+        }
+        #hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out;
+        }
+        #hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1.5s ease-out;
+        }
+        .btn {
+            background: #fff;
+            color: #ff6347;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: transform 0.3s, background 0.3s;
+            animation: fadeInUp 2s ease-out;
+        }
+        .btn:hover {
+            transform: scale(1.1);
+            background: #ff6347;
+            color: #fff;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Content Sections */
+        section {
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+        #about {
+            background: #fff;
+        }
+        #features {
+            background: #f4f4f4;
+        }
+        #contact {
+            background: #fff;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .feature {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .feature:hover {
+            transform: translateY(-10px);
+        }
+
+        /* Footer */
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 768px) {
+            #hero h1 {
+                font-size: 2rem;
+            }
+            #hero p {
+                font-size: 1.2rem;
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            nav ul li {
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>Brand</h2>
+        <nav>
+            <ul>
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="hero">
+        <h1>Welcome to Our Modern Landing Page</h1>
+        <p>Experience smooth animations and responsive design.</p>
+        <a href="#about" class="btn">Learn More</a>
+    </section>
+
+    <section id="about">
+        <h2>About Us</h2>
+        <p>We create innovative web solutions with cutting-edge animations and effects.</p>
+    </section>
+
+    <section id="features">
+        <h2>Our Features</h2>
+        <div class="feature-grid">
+            <div class="feature">
+                <h3>Feature 1</h3>
+                <p>Hero text animations for engaging introductions.</p>
+            </div>
+            <div class="feature">
+                <h3>Feature 2</h3>
+                <p>Smooth scroll effects for seamless navigation.</p>
+            </div>
+            <div class="feature">
+                <h3>Feature 3</h3>
+                <p>Button hover animations to enhance user interaction.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <p>Get in touch for more information.</p>
+        <a href="mailto:info@example.com" class="btn">Email Us</a>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Brand. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // JavaScript for additional interactivity if needed
+        // For now, smooth scroll is handled by CSS scroll-behavior
+        // You can add more JS animations here if required
+    </script>
+</body>
+</html>
