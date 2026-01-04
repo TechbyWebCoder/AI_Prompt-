@@ -1,0 +1,3 @@
+1️⃣ Animated Landing Page
+
+Create a modern animated landing page using HTML, CSS, and JavaScript with hero text animations, smooth scroll effects, button hover animations, and responsive layout.
