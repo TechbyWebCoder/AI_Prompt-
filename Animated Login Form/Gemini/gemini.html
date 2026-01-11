@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Login & Signup</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --bg-color: #f0f2f5;
+            --text-color: #333;
+            --transition-speed: 0.4s;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Container for the sliding effect */
+        .container {
+            background: #fff;
+            width: 400px;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            position: relative;
+            min-height: 480px;
+            transition: height 0.3s ease;
+        }
+
+        .form-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        form {
+            position: absolute;
+            width: 100%;
+            transition: all var(--transition-speed) ease-in-out;
+        }
+
+        /* Hide Signup by default */
+        #signup-form {
+            opacity: 0;
+            transform: translateX(100%);
+            pointer-events: none;
+        }
+
+        /* Active states for toggling */
+        .container.active-signup #login-form {
+            opacity: 0;
+            transform: translateX(-100%);
+            pointer-events: none;
+        }
+
+        .container.active-signup #signup-form {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: all;
+        }
+
+        h2 {
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: var(--text-color);
+        }
+
+        /* Input Group with Floating Labels */
+        .input-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px 0;
+            font-size: 16px;
+            color: var(--text-color);
+            border: none;
+            border-bottom: 2px solid #ddd;
+            outline: none;
+            background: transparent;
+            transition: border-color 0.3s;
+        }
+
+        .input-group label {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            font-size: 16px;
+            color: #999;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        /* Floating Label Logic */
+        .input-group input:focus ~ label,
+        .input-group input:not(:placeholder-shown) ~ label {
+            top: -12px;
+            font-size: 12px;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* Focus Underline Animation */
+        .input-group input:focus {
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-color);
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #357abd;
+        }
+
+        .toggle-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 14px;
+        }
+
+        .toggle-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="container">
+    <div class="form-wrapper">
+        <form id="login-form">
+            <h2>Login</h2>
+            <div class="input-group">
+                <input type="email" id="login-email" placeholder=" " required>
+                <label for="login-email">Email Address</label>
+            </div>
+            <div class="input-group">
+                <input type="password" id="login-password" placeholder=" " required>
+                <label for="login-password">Password</label>
+            </div>
+            <button type="submit">Sign In</button>
+            <p class="toggle-link">Don't have an account? <a href="#" id="to-signup">Sign up</a></p>
+        </form>
+
+        <form id="signup-form">
+            <h2>Create Account</h2>
+            <div class="input-group">
+                <input type="text" id="signup-name" placeholder=" " required>
+                <label for="signup-name">Full Name</label>
+            </div>
+            <div class="input-group">
+                <input type="email" id="signup-email" placeholder=" " required>
+                <label for="signup-email">Email Address</label>
+            </div>
+            <div class="input-group">
+                <input type="password" id="signup-password" placeholder=" " required>
+                <label for="signup-password">Password</label>
+            </div>
+            <button type="submit">Sign Up</button>
+            <p class="toggle-link">Already have an account? <a href="#" id="to-login">Login</a></p>
+        </form>
+    </div>
+</div>
+
+<script>
+    const container = document.getElementById('container');
+    const toSignup = document.getElementById('to-signup');
+    const toLogin = document.getElementById('to-login');
+
+    // Toggle to Signup
+    toSignup.addEventListener('click', (e) => {
+        e.preventDefault();
+        container.classList.add('active-signup');
+    });
+
+    // Toggle to Login
+    toLogin.addEventListener('click', (e) => {
+        e.preventDefault();
+        container.classList.remove('active-signup');
+    });
+</script>
+
+</body>
+</html>
