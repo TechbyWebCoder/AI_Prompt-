@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Animated Login & Signup</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ---------- RESET ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* ---------- BODY ---------- */
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- CONTAINER ---------- */
+.container {
+  width: 360px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+/* ---------- TABS ---------- */
+.tabs {
+  display: flex;
+}
+
+.tabs button {
+  flex: 1;
+  padding: 15px;
+  border: none;
+  cursor: pointer;
+  background: #f0f0f0;
+  font-size: 16px;
+  transition: background 0.3s;
+}
+
+.tabs button.active {
+  background: #fff;
+  font-weight: 600;
+}
+
+/* ---------- FORMS WRAPPER ---------- */
+.forms {
+  width: 200%;
+  display: flex;
+  transition: transform 0.6s ease;
+}
+
+.form {
+  width: 50%;
+  padding: 30px;
+}
+
+/* ---------- INPUT GROUP ---------- */
+.input-group {
+  position: relative;
+  margin: 25px 0;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px 0;
+  font-size: 16px;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  outline: none;
+  background: transparent;
+  transition: border-color 0.3s;
+}
+
+.input-group label {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  color: #999;
+  font-size: 16px;
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: 0.3s ease;
+}
+
+/* Floating label effect */
+.input-group input:focus,
+.input-group input:valid {
+  border-bottom-color: #667eea;
+}
+
+.input-group input:focus + label,
+.input-group input:valid + label {
+  top: -6px;
+  font-size: 12px;
+  color: #667eea;
+}
+
+/* ---------- BUTTON ---------- */
+.btn {
+  width: 100%;
+  padding: 12px;
+  background: #667eea;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.btn:hover {
+  background: #5a67d8;
+  transform: translateY(-2px);
+}
+
+/* ---------- TEXT ---------- */
+.form p {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+  color: #666;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="tabs">
+    <button id="loginTab" class="active">Login</button>
+    <button id="signupTab">Signup</button>
+  </div>
+
+  <div class="forms" id="forms">
+    <!-- LOGIN FORM -->
+    <form class="form">
+      <div class="input-group">
+        <input type="email" required>
+        <label>Email</label>
+      </div>
+      <div class="input-group">
+        <input type="password" required>
+        <label>Password</label>
+      </div>
+      <button class="btn">Login</button>
+      <p>Welcome back 👋</p>
+    </form>
+
+    <!-- SIGNUP FORM -->
+    <form class="form">
+      <div class="input-group">
+        <input type="text" required>
+        <label>Username</label>
+      </div>
+      <div class="input-group">
+        <input type="email" required>
+        <label>Email</label>
+      </div>
+      <div class="input-group">
+        <input type="password" required>
+        <label>Password</label>
+      </div>
+      <button class="btn">Signup</button>
+      <p>Create your account ✨</p>
+    </form>
+  </div>
+</div>
+
+<script>
+const loginTab = document.getElementById("loginTab");
+const signupTab = document.getElementById("signupTab");
+const forms = document.getElementById("forms");
+
+loginTab.addEventListener("click", () => {
+  forms.style.transform = "translateX(0%)";
+  loginTab.classList.add("active");
+  signupTab.classList.remove("active");
+});
+
+signupTab.addEventListener("click", () => {
+  forms.style.transform = "translateX(-50%)";
+  signupTab.classList.add("active");
+  loginTab.classList.remove("active");
+});
+</script>
+
+</body>
+</html>
