@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Login & Signup Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 400px;
+        }
+
+        .form-wrapper {
+            padding: 20px;
+        }
+
+        .toggle-buttons {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .toggle-buttons button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background-color: #e0e0e0;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .toggle-buttons button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .forms {
+            position: relative;
+            height: 300px; /* Adjust based on form content */
+        }
+
+        .form {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .form.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .input-group label {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            color: #aaa;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus,
+        .input-group input.has-value {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        .input-group input:focus + label,
+        .input-group input.has-value + label {
+            top: -10px;
+            left: 5px;
+            font-size: 12px;
+            color: #007bff;
+            background-color: white;
+            padding: 0 5px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-wrapper">
+            <div class="toggle-buttons">
+                <button id="login-toggle" class="active">Login</button>
+                <button id="signup-toggle">Signup</button>
+            </div>
+            <div class="forms">
+                <form id="login-form" class="form active">
+                    <h2>Login</h2>
+                    <div class="input-group">
+                        <input type="email" id="login-email" required>
+                        <label for="login-email">Email</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="login-password" required>
+                        <label for="login-password">Password</label>
+                    </div>
+                    <button type="submit">Login</button>
+                </form>
+                <form id="signup-form" class="form">
+                    <h2>Signup</h2>
+                    <div class="input-group">
+                        <input type="text" id="signup-username" required>
+                        <label for="signup-username">Username</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" id="signup-email" required>
+                        <label for="signup-email">Email</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="signup-password" required>
+                        <label for="signup-password">Password</label>
+                    </div>
+                    <button type="submit">Signup</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginToggle = document.getElementById('login-toggle');
+            const signupToggle = document.getElementById('signup-toggle');
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+
+            loginToggle.addEventListener('click', () => {
+                loginToggle.classList.add('active');
+                signupToggle.classList.remove('active');
+                loginForm.classList.add('active');
+                signupForm.classList.remove('active');
+            });
+
+            signupToggle.addEventListener('click', () => {
+                signupToggle.classList.add('active');
+                loginToggle.classList.remove('active');
+                signupForm.classList.add('active');
+                loginForm.classList.remove('active');
+            });
+
+            // Handle floating labels
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    input.classList.add('has-value');
+                });
+                input.addEventListener('blur', () => {
+                    if (input.value.trim() === '') {r
+                        input.classList.remove('has-value');
+                    } else {
+                        input.classList.add('has-value');
+                    }
+                });
+                // Check on load
+                if (input.value.trim() !== '') {
+                    input.classList.add('has-value');
+                }
+            });
+
+            // Prevent form submission for demo
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    alert('Form submitted!');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
