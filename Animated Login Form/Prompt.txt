@@ -1,0 +1,3 @@
+2️⃣ Animated Login Form
+
+Create an animated login & signup form using HTML, CSS, and JavaScript with floating labels, input focus animations, and smooth transitions.
