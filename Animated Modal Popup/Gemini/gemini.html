@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Modal - Scale, Fade, Slide</title>
+    <style>
+        /* 1. General Page Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+
+        .trigger-btn {
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .trigger-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* 2. Modal Overlay (The Backdrop) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            
+            /* Initial Hidden State (Fade) */
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* 3. Modal Content (The Box) */
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            position: relative;
+
+            /* Initial Hidden State (Slide & Scale) */
+            transform: translateY(-50px) scale(0.8);
+            opacity: 0;
+            
+            /* Transition for combined effects */
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* 4. The "Active" State (Triggered by JS) */
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-overlay.active .modal-content {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* 5. Inner UI Elements */
+        .close-cross {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        .close-cross:hover { color: #333; }
+
+        h2 { margin-top: 0; color: #333; }
+        p { color: #666; line-height: 1.6; }
+
+        .close-btn-main {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: none;
+            background: #6c757d;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="trigger-btn" id="openBtn">View Surprise</button>
+
+    <div class="modal-overlay" id="modalOverlay">
+        
+        <div class="modal-content">
+            <span class="close-cross" id="closeCross">&times;</span>
+            <h2>Action Successful!</h2>
+            <p>This modal smoothly combines <strong>opacity</strong> (fade), <strong>translateY</strong> (slide), and <strong>scale</strong> (zoom) for a modern feel.</p>
+            <button class="close-btn-main" id="closeBtn">Dismiss</button>
+        </div>
+    </div>
+
+    <script>
+        const openBtn = document.getElementById('openBtn');
+        const closeBtn = document.getElementById('closeBtn');
+        const closeCross = document.getElementById('closeCross');
+        const overlay = document.getElementById('modalOverlay');
+
+        // Function to toggle modal
+        function toggleModal() {
+            overlay.classList.toggle('active');
+        }
+
+        // Event Listeners
+        openBtn.addEventListener('click', toggleModal);
+        closeBtn.addEventListener('click', toggleModal);
+        closeCross.addEventListener('click', toggleModal);
+
+        // Close if clicking on the dark background
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                toggleModal();
+            }
+        });
+
+        // Close on 'Escape' key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && overlay.classList.contains('active')) {
+                toggleModal();
+            }
+        });
+    </script>
+</body>
+</html>
