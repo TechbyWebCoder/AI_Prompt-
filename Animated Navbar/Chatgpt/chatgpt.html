@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Animated Navbar</title>
+
+  <style>
+    :root {
+      --primary: #6366f1;
+      --bg: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f9fafb;
+      color: var(--text);
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    /* ===== DESKTOP MENU ===== */
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      position: relative;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-weight: 500;
+      padding: 0.25rem 0;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--text);
+    }
+
+    /* Sliding underline */
+    .nav-underline {
+      position: absolute;
+      bottom: -4px;
+      height: 2px;
+      background: var(--primary);
+      border-radius: 999px;
+      transition: all 0.3s ease;
+    }
+
+    /* ===== MOBILE ===== */
+    .menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .mobile-menu {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: all 0.35s ease;
+      background: var(--bg);
+    }
+
+    .mobile-menu.open {
+      max-height: 300px;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .mobile-menu a {
+      display: block;
+      padding: 1rem;
+      border-top: 1px solid #e5e7eb;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .mobile-menu a.active {
+      background: #eef2ff;
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .menu-btn {
+        display: block;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="logo">Brand</div>
+
+    <div class="nav-links" id="navLinks">
+      <a href="#" class="active">Home</a>
+      <a href="#">About</a>
+      <a href="#">Services</a>
+      <a href="#">Contact</a>
+      <span class="nav-underline"></span>
+    </div>
+
+    <button class="menu-btn" id="menuBtn">☰</button>
+  </div>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#" class="active">Home</a>
+    <a href="#">About</a>
+    <a href="#">Services</a>
+    <a href="#">Contact</a>
+  </div>
+</nav>
+
+<script>
+  const links = document.querySelectorAll('.nav-links a');
+  const underline = document.querySelector('.nav-underline');
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  function moveUnderline(el) {
+    underline.style.width = el.offsetWidth + 'px';
+    underline.style.left = el.offsetLeft + 'px';
+  }
+
+  // Init underline on active
+  window.addEventListener('load', () => {
+    const active = document.querySelector('.nav-links a.active');
+    if (active) moveUnderline(active);
+  });
+
+  links.forEach(link => {
+    link.addEventListener('mouseenter', () => moveUnderline(link));
+
+    link.addEventListener('click', () => {
+      links.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+      moveUnderline(link);
+    });
+  });
+
+  // Mobile menu toggle
+  menuBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+</script>
+
+</body>
+</html>
