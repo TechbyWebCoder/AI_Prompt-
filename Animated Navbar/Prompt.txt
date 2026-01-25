@@ -1,0 +1,3 @@
+4️⃣ Animated Navbar
+
+Build an animated navigation bar with underline slide animation, active link indicator, and mobile menu transition.
