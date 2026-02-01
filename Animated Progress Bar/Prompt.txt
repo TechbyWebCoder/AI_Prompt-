@@ -1,0 +1,3 @@
+5️⃣ Animated Progress Bar
+
+Build an animated progress bar system using HTML, CSS, and JavaScript with percentage counters and smooth fill animation.
