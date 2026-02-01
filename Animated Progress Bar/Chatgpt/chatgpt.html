@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Animated Progress Bars</title>
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #0f172a;
+        color: #e5e7eb;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+        width: 420px;
+        background: #020617;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
+    .progress-item {
+        margin-bottom: 20px;
+    }
+
+    .label {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 6px;
+        font-size: 14px;
+    }
+
+    .progress-bar {
+        width: 100%;
+        height: 14px;
+        background: #1e293b;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #38bdf8, #22c55e);
+        border-radius: 20px;
+        transition: width 1.6s ease-in-out;
+    }
+
+    button {
+        width: 100%;
+        margin-top: 10px;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        background: #2563eb;
+        color: white;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    button:hover {
+        background: #1d4ed8;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Progress System</h2>
+
+    <div class="progress-item">
+        <div class="label">
+            <span>HTML</span>
+            <span class="percent">0%</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" data-progress="90"></div>
+        </div>
+    </div>
+
+    <div class="progress-item">
+        <div class="label">
+            <span>CSS</span>
+            <span class="percent">0%</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" data-progress="80"></div>
+        </div>
+    </div>
+
+    <div class="progress-item">
+        <div class="label">
+            <span>JavaScript</span>
+            <span class="percent">0%</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" data-progress="70"></div>
+        </div>
+    </div>
+
+    <button onclick="startProgress()">Animate Progress</button>
+</div>
+
+<script>
+function startProgress() {
+    const fills = document.querySelectorAll('.progress-fill');
+
+    fills.forEach(fill => {
+        const target = parseInt(fill.dataset.progress);
+        const percentLabel = fill.closest('.progress-item').querySelector('.percent');
+
+        // Reset
+        fill.style.width = '0%';
+        percentLabel.textContent = '0%';
+
+        let current = 0;
+        const duration = 1500;
+        const intervalTime = 15;
+        const increment = target / (duration / intervalTime);
+
+        const counter = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                current = target;
+                clearInterval(counter);
+            }
+            percentLabel.textContent = Math.round(current) + '%';
+        }, intervalTime);
+
+        // Trigger smooth fill
+        setTimeout(() => {
+            fill.style.width = target + '%';
+        }, 50);
+    });
+}
+</script>
+
+</body>
+</html>
