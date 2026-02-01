@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Progress Bar System</title>
+    <style>
+        :root {
+            --bg-color: #f0f2f5;
+            --bar-bg: #e0e0e0;
+            --progress-color: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            --text-color: #333;
+            --shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h2 {
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+        }
+
+        /* The Progress System Wrapper */
+        .progress-wrapper {
+            margin-bottom: 2rem;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        /* The Background Track */
+        .progress-track {
+            width: 100%;
+            height: 20px;
+            background-color: var(--bar-bg);
+            border-radius: 10px;
+            overflow: hidden; /* Ensures the bar doesn't spill out */
+            position: relative;
+        }
+
+        /* The Animated Bar */
+        .progress-fill {
+            height: 100%;
+            width: 0%; /* Start at 0 */
+            background: var(--progress-color);
+            border-radius: 10px;
+            transition: width 2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        /* Shine Effect Overlay */
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(
+                90deg,
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.3) 50%,
+                rgba(255,255,255,0) 100%
+            );
+            animation: shine 2s infinite;
+        }
+
+        @keyframes shine {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(100%); }
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .btn-start { background-color: #4caf50; color: white; }
+        .btn-reset { background-color: #f44336; color: white; }
+
+        button:hover { transform: translateY(-2px); opacity: 0.9; }
+        button:active { transform: translateY(0); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>System Status</h2>
+        
+        <div class="progress-wrapper">
+            <div class="progress-info">
+                <span>Uploading Files...</span>
+                <span id="percentage-text">0%</span>
+            </div>
+            <div class="progress-track">
+                <div id="progress-bar" class="progress-fill"></div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn-start" onclick="startLoading()">Start Animation</button>
+            <button class="btn-reset" onclick="resetBar()">Reset</button>
+        </div>
+    </div>
+
+    <script>
+        function startLoading() {
+            const progressBar = document.getElementById('progress-bar');
+            const percentText = document.getElementById('percentage-text');
+            const target = 100; // You can change this to any value up to 100
+            
+            // 1. Animate the bar width via CSS
+            progressBar.style.width = target + '%';
+
+            // 2. Animate the numerical counter via JS
+            let count = 0;
+            const duration = 2000; // Matches the CSS transition (2s)
+            const intervalTime = 20; // Update every 20ms
+            const increment = target / (duration / intervalTime);
+
+            const counter = setInterval(() => {
+                count += increment;
+                if (count >= target) {
+                    percentText.innerText = target + '%';
+                    clearInterval(counter);
+                } else {
+                    percentText.innerText = Math.floor(count) + '%';
+                }
+            }, intervalTime);
+        }
+
+        function resetBar() {
+            const progressBar = document.getElementById('progress-bar');
+            const percentText = document.getElementById('percentage-text');
+            
+            progressBar.style.transition = 'none'; // Instant reset
+            progressBar.style.width = '0%';
+            percentText.innerText = '0%';
+            
+            // Force reflow to re-enable transition for next click
+            void progressBar.offsetWidth; 
+            progressBar.style.transition = 'width 2s cubic-bezier(0.4, 0, 0.2, 1)';
+        }
+    </script>
+
+</body>
+</html>
