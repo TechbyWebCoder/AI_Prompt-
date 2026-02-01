@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Progress Bar System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 40px;
+            font-size: 28px;
+        }
+
+        .progress-item {
+            margin-bottom: 35px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .progress-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .progress-percentage {
+            font-size: 18px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 15px;
+            transition: width 2s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+
+        .progress-bar-fill.blue {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .progress-bar-fill.green {
+            background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .progress-bar-fill.orange {
+            background: linear-gradient(90deg, #f2994a 0%, #f2c94c 100%);
+        }
+
+        .progress-bar-fill.red {
+            background: linear-gradient(90deg, #eb3349 0%, #f45c43 100%);
+        }
+
+        .progress-bar-fill.purple {
+            background: linear-gradient(90deg, #8e2de2 0%, #4a00e0 100%);
+        }
+
+        .controls {
+            margin-top: 40px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .reset-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .reset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Animated Progress Bar System</h1>
+        
+        <div class="progress-item">
+            <div class="progress-header">
+                <span class="progress-label">Loading Assets</span>
+                <span class="progress-percentage" id="percent1">0%</span>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill blue" id="progress1"></div>
+            </div>
+        </div>
+
+        <div class="progress-item">
+            <div class="progress-header">
+                <span class="progress-label">Processing Data</span>
+                <span class="progress-percentage" id="percent2">0%</span>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill green" id="progress2"></div>
+            </div>
+        </div>
+
+        <div class="progress-item">
+            <div class="progress-header">
+                <span class="progress-label">Uploading Files</span>
+                <span class="progress-percentage" id="percent3">0%</span>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill orange" id="progress3"></div>
+            </div>
+        </div>
+
+        <div class="progress-item">
+            <div class="progress-header">
+                <span class="progress-label">Analyzing Content</span>
+                <span class="progress-percentage" id="percent4">0%</span>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill red" id="progress4"></div>
+            </div>
+        </div>
+
+        <div class="progress-item">
+            <div class="progress-header">
+                <span class="progress-label">Finalizing</span>
+                <span class="progress-percentage" id="percent5">0%</span>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill purple" id="progress5"></div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="start-btn" onclick="startProgress()">Start Progress</button>
+            <button class="reset-btn" onclick="resetProgress()">Reset</button>
+        </div>
+    </div>
+
+    <script>
+        const progressBars = [
+            { bar: document.getElementById('progress1'), percent: document.getElementById('percent1'), target: 85 },
+            { bar: document.getElementById('progress2'), percent: document.getElementById('percent2'), target: 92 },
+            { bar: document.getElementById('progress3'), percent: document.getElementById('percent3'), target: 78 },
+            { bar: document.getElementById('progress4'), percent: document.getElementById('percent4'), target: 95 },
+            { bar: document.getElementById('progress5'), percent: document.getElementById('percent5'), target: 100 }
+        ];
+
+        let intervals = [];
+
+        function animateProgress(barObj, delay = 0) {
+            setTimeout(() => {
+                let current = 0;
+                const increment = barObj.target / 100;
+                
+                const interval = setInterval(() => {
+                    current += increment;
+                    if (current >= barObj.target) {
+                        current = barObj.target;
+                        clearInterval(interval);
+                    }
+                    
+                    barObj.bar.style.width = current + '%';
+                    barObj.percent.textContent = Math.round(current) + '%';
+                }, 20);
+                
+                intervals.push(interval);
+            }, delay);
+        }
+
+        function startProgress() {
+            resetProgress();
+            progressBars.forEach((barObj, index) => {
+                animateProgress(barObj, index * 300);
+            });
+        }
+
+        function resetProgress() {
+            intervals.forEach(interval => clearInterval(interval));
+            intervals = [];
+            
+            progressBars.forEach(barObj => {
+                barObj.bar.style.width = '0%';
+                barObj.percent.textContent = '0%';
+            });
+        }
+    </script>
+</body>
+</html>
