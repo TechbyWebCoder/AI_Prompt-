@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG Animations Example</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            gap: 50px;
+        }
+        .icon {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+        }
+        /* Self-drawing animation for checkmark */
+        #checkmark path {
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            animation: draw 2s forwards;
+        }
+        @keyframes draw {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+        /* Hover animation for heart: scale and color change */
+        #heart:hover {
+            transform: scale(1.2);
+            transition: transform 0.3s ease;
+        }
+        #heart:hover path {
+            fill: red;
+            transition: fill 0.3s ease;
+        }
+        /* Self-drawing for arrow, with hover rotate */
+        #arrow path {
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+        }
+        #arrow:hover path {
+            animation: draw 1s forwards;
+        }
+        #arrow:hover {
+            transform: rotate(360deg);
+            transition: transform 1s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Checkmark: Draws itself on load -->
+        <svg id="checkmark" class="icon" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2">
+            <path d="M5 13l4 4L19 7"/>
+        </svg>
+
+        <!-- Heart: Animates on hover (scale and color) -->
+        <svg id="heart" class="icon" viewBox="0 0 24 24" fill="pink" stroke="none">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+
+        <!-- Arrow: Draws itself on hover, plus rotate -->
+        <svg id="arrow" class="icon" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+    </div>
+
+    <script>
+        // JavaScript for additional interactivity if needed
+        // For example, reset drawing on arrow after hover
+        const arrow = document.getElementById('arrow');
+        arrow.addEventListener('mouseleave', () => {
+            const path = arrow.querySelector('path');
+            path.style.strokeDashoffset = 100;
+            arrow.style.transform = 'rotate(0deg)';
+        });
+    </script>
+</body>
+</html>
