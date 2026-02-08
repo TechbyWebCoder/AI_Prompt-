@@ -1,0 +1,3 @@
+6️⃣ Animated SVG Icons
+
+Develop SVG animations using CSS and JavaScript where icons draw themselves or animate on hover.
