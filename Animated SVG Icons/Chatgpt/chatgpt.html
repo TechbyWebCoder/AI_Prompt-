@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SVG Draw Animations</title>
+
+<style>
+    body {
+        background: #0f172a;
+        color: #e5e7eb;
+        font-family: system-ui, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .icon-container {
+        display: flex;
+        gap: 40px;
+    }
+
+    svg {
+        width: 100px;
+        height: 100px;
+        cursor: pointer;
+    }
+
+    /* Base stroke style */
+    .draw-path {
+        fill: none;
+        stroke: #38bdf8;
+        stroke-width: 4;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+
+        stroke-dasharray: 300;
+        stroke-dashoffset: 300;
+        animation: draw 2s ease forwards;
+    }
+
+    /* Draw animation */
+    @keyframes draw {
+        to {
+            stroke-dashoffset: 0;
+        }
+    }
+
+    /* Hover effects */
+    svg:hover .draw-path {
+        stroke: #22c55e;
+        filter: drop-shadow(0 0 6px #22c55e);
+    }
+
+    svg:hover {
+        transform: scale(1.1);
+        transition: transform 0.3s ease;
+    }
+</style>
+</head>
+<body>
+
+<div class="icon-container">
+
+    <!-- Check Icon -->
+    <svg viewBox="0 0 64 64" data-reset>
+        <path class="draw-path" d="M16 34 L28 46 L48 18" />
+    </svg>
+
+    <!-- Heart Icon -->
+    <svg viewBox="0 0 64 64" data-reset>
+        <path class="draw-path"
+              d="M32 50
+                 C10 30, 18 12, 32 22
+                 C46 12, 54 30, 32 50" />
+    </svg>
+
+    <!-- Star Icon -->
+    <svg viewBox="0 0 64 64" data-reset>
+        <path class="draw-path"
+              d="M32 6
+                 L39 24
+                 L58 24
+                 L42 36
+                 L48 54
+                 L32 44
+                 L16 54
+                 L22 36
+                 L6 24
+                 L25 24
+                 Z" />
+    </svg>
+
+</div>
+
+<script>
+    // Reset animation on hover (re-draw effect)
+    document.querySelectorAll('[data-reset]').forEach(svg => {
+        svg.addEventListener('mouseenter', () => {
+            svg.querySelectorAll('.draw-path').forEach(path => {
+                path.style.animation = 'none';
+                path.getBoundingClientRect(); // force reflow
+                path.style.animation = 'draw 1.5s ease forwards';
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
