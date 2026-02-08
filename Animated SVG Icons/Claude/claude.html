@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated SVG Icons</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .icon-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .icon-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .icon-card h3 {
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        svg {
+            width: 100px;
+            height: 100px;
+        }
+
+        /* Self-drawing animations */
+        .draw-on-load path,
+        .draw-on-load circle,
+        .draw-on-load polyline,
+        .draw-on-load line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: draw 2s ease-in-out forwards;
+        }
+
+        @keyframes draw {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        /* Hover animations for heart */
+        .heart-icon:hover .heart-path {
+            animation: heartbeat 0.6s ease-in-out;
+            fill: #ff6b6b;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.2); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.2); }
+        }
+
+        /* Hover animation for star */
+        .star-icon:hover .star-path {
+            animation: starRotate 1s ease-in-out;
+            fill: #ffd93d;
+        }
+
+        @keyframes starRotate {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        /* Hover animation for check */
+        .check-icon:hover .check-path {
+            animation: checkBounce 0.5s ease-in-out;
+        }
+
+        @keyframes checkBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        /* Hover animation for bell */
+        .bell-icon:hover .bell-body {
+            animation: bellRing 0.5s ease-in-out;
+            transform-origin: 50% 0%;
+        }
+
+        @keyframes bellRing {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(15deg); }
+            50% { transform: rotate(-15deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        /* Hover animation for location pin */
+        .location-icon:hover .pin {
+            animation: pinBounce 0.6s ease-in-out;
+        }
+
+        @keyframes pinBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* Hover animation for lightning */
+        .lightning-icon:hover .lightning-path {
+            animation: lightningFlash 0.3s ease-in-out;
+            fill: #ffd93d;
+        }
+
+        @keyframes lightningFlash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Stagger animation delays */
+        .icon-card:nth-child(1) svg path,
+        .icon-card:nth-child(1) svg circle { animation-delay: 0s; }
+        .icon-card:nth-child(2) svg path,
+        .icon-card:nth-child(2) svg circle { animation-delay: 0.2s; }
+        .icon-card:nth-child(3) svg path,
+        .icon-card:nth-child(3) svg polyline { animation-delay: 0.4s; }
+        .icon-card:nth-child(4) svg path { animation-delay: 0.6s; }
+        .icon-card:nth-child(5) svg path { animation-delay: 0.8s; }
+        .icon-card:nth-child(6) svg path { animation-delay: 1s; }
+
+        .replay-btn {
+            margin-top: 30px;
+            padding: 15px 40px;
+            background: white;
+            border: none;
+            border-radius: 50px;
+            color: #667eea;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .replay-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <h1>Animated SVG Icons</h1>
+    <p class="subtitle">Watch them draw themselves, then hover to see more!</p>
+    
+    <div class="container">
+        <!-- Heart Icon -->
+        <div class="icon-card">
+            <svg class="heart-icon draw-on-load" viewBox="0 0 100 100">
+                <path class="heart-path" d="M50,85 C50,85 15,60 15,40 C15,25 25,15 35,15 C42,15 47,20 50,25 C53,20 58,15 65,15 C75,15 85,25 85,40 C85,60 50,85 50,85 Z" 
+                      fill="none" stroke="#ff6b6b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h3>Heart</h3>
+        </div>
+
+        <!-- Star Icon -->
+        <div class="icon-card">
+            <svg class="star-icon draw-on-load" viewBox="0 0 100 100">
+                <path class="star-path" d="M50,15 L58,40 L85,40 L63,55 L71,80 L50,65 L29,80 L37,55 L15,40 L42,40 Z" 
+                      fill="none" stroke="#ffd93d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h3>Star</h3>
+        </div>
+
+        <!-- Check Icon -->
+        <div class="icon-card">
+            <svg class="check-icon draw-on-load" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="35" fill="none" stroke="#51cf66" stroke-width="3"/>
+                <polyline class="check-path" points="30,50 45,65 70,35" fill="none" stroke="#51cf66" 
+                         stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h3>Check</h3>
+        </div>
+
+        <!-- Bell Icon -->
+        <div class="icon-card">
+            <svg class="bell-icon draw-on-load" viewBox="0 0 100 100">
+                <path class="bell-body" d="M50,20 C50,20 40,20 40,30 L40,55 C40,60 35,60 30,65 L70,65 C65,60 60,60 60,55 L60,30 C60,20 50,20 50,20 Z M45,70 C45,73 47,75 50,75 C53,75 55,73 55,70" 
+                      fill="none" stroke="#748ffc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <line x1="50" y1="15" x2="50" y2="20" stroke="#748ffc" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+            <h3>Bell</h3>
+        </div>
+
+        <!-- Location Pin -->
+        <div class="icon-card">
+            <svg class="location-icon draw-on-load" viewBox="0 0 100 100">
+                <path class="pin" d="M50,15 C35,15 25,25 25,40 C25,55 50,85 50,85 C50,85 75,55 75,40 C75,25 65,15 50,15 Z M50,47 C46,47 43,44 43,40 C43,36 46,33 50,33 C54,33 57,36 57,40 C57,44 54,47 50,47 Z" 
+                      fill="none" stroke="#ff6b6b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h3>Location</h3>
+        </div>
+
+        <!-- Lightning Icon -->
+        <div class="icon-card">
+            <svg class="lightning-icon draw-on-load" viewBox="0 0 100 100">
+                <path class="lightning-path" d="M55,10 L25,50 L45,50 L35,90 L75,40 L55,40 Z" 
+                      fill="none" stroke="#ffd93d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h3>Lightning</h3>
+        </div>
+    </div>
+
+    <button class="replay-btn" onclick="replayAnimations()">Replay Drawing</button>
+
+    <script>
+        function replayAnimations() {
+            const svgs = document.querySelectorAll('.draw-on-load');
+            svgs.forEach(svg => {
+                const paths = svg.querySelectorAll('path, circle, polyline, line');
+                paths.forEach(path => {
+                    path.style.animation = 'none';
+                    path.offsetHeight; // Trigger reflow
+                    path.style.animation = null;
+                });
+            });
+        }
+
+        // Add click event to cards for mobile touch
+        document.querySelectorAll('.icon-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'translateY(-10px)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 300);
+            });
+        });
+    </script>
+</body>
+</html>
