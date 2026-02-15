@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Button Animation Gallery</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --bg: #0f1220;
+  --card: #171a2e;
+  --text: #ffffff;
+  --accent: #5eead4;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #1b1f3b, var(--bg));
+  color: var(--text);
+  min-height: 100vh;
+  padding: 40px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 2.5rem;
+  letter-spacing: 1px;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.card {
+  background: var(--card);
+  padding: 30px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,.4);
+}
+
+.card h3 {
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+button {
+  position: relative;
+  padding: 14px 32px;
+  font-size: 1rem;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  color: white;
+}
+
+/* ===== Ripple Button ===== */
+.ripple {
+  background: #2563eb;
+}
+
+.ripple span {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple 600ms linear;
+  background: rgba(255,255,255,.6);
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* ===== Glow Button ===== */
+.glow {
+  background: #111827;
+  box-shadow: 0 0 0 rgba(94,234,212,0);
+  transition: box-shadow .3s;
+}
+
+.glow:hover {
+  box-shadow:
+    0 0 10px rgba(94,234,212,.6),
+    0 0 30px rgba(94,234,212,.6);
+}
+
+/* ===== Neon Button ===== */
+.neon {
+  background: transparent;
+  border: 2px solid #f472b6;
+  color: #f472b6;
+  text-shadow: 0 0 8px #f472b6;
+  box-shadow: inset 0 0 10px #f472b6;
+  transition: all .3s;
+}
+
+.neon:hover {
+  background: #f472b6;
+  color: black;
+  box-shadow: 0 0 25px #f472b6;
+}
+
+/* ===== 3D Press Button ===== */
+.press {
+  background: #22c55e;
+  box-shadow: 0 8px #15803d;
+  transition: transform .1s, box-shadow .1s;
+}
+
+.press:active {
+  transform: translateY(6px);
+  box-shadow: 0 2px #15803d;
+}
+
+/* ===== Gradient Transition Button ===== */
+.gradient {
+  background: linear-gradient(120deg, #6366f1, #ec4899, #22d3ee);
+  background-size: 200%;
+  transition: background-position .5s;
+}
+
+.gradient:hover {
+  background-position: right;
+}
+
+/* ===== Glass Button ===== */
+.glass {
+  background: rgba(255,255,255,.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,.3);
+  transition: all .3s;
+}
+
+.glass:hover {
+  background: rgba(255,255,255,.25);
+}
+
+/* ===== Pulse Button ===== */
+.pulse {
+  background: #ef4444;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(239,68,68,.6); }
+  70% { box-shadow: 0 0 0 20px rgba(239,68,68,0); }
+  100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
+}
+</style>
+</head>
+
+<body>
+
+<h1>✨ Button Animation Gallery</h1>
+
+<div class="gallery">
+
+  <div class="card">
+    <h3>Ripple</h3>
+    <button class="ripple">Click Me</button>
+  </div>
+
+  <div class="card">
+    <h3>Glow</h3>
+    <button class="glow">Hover Me</button>
+  </div>
+
+  <div class="card">
+    <h3>Neon</h3>
+    <button class="neon">Neon</button>
+  </div>
+
+  <div class="card">
+    <h3>3D Press</h3>
+    <button class="press">Press</button>
+  </div>
+
+  <div class="card">
+    <h3>Gradient</h3>
+    <button class="gradient">Hover</button>
+  </div>
+
+  <div class="card">
+    <h3>Glass</h3>
+    <button class="glass">Glass</button>
+  </div>
+
+  <div class="card">
+    <h3>Pulse</h3>
+    <button class="pulse">Pulse</button>
+  </div>
+
+</div>
+
+<script>
+// Ripple effect logic
+document.querySelectorAll('.ripple').forEach(button => {
+  button.addEventListener('click', function (e) {
+    const circle = document.createElement('span');
+    const diameter = Math.max(this.clientWidth, this.clientHeight);
+    const radius = diameter / 2;
+
+    circle.style.width = circle.style.height = `${diameter}px`;
+    circle.style.left = `${e.clientX - this.offsetLeft - radius}px`;
+    circle.style.top = `${e.clientY - this.offsetTop - radius}px`;
+
+    this.appendChild(circle);
+    setTimeout(() => circle.remove(), 600);
+  });
+});
+</script>
+
+</body>
+</html>
