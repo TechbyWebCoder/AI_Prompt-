@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Button Gallery</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --btn-primary: #6366f1;
+            --neon-color: #00f2ff;
+            --glow-color: #ec4899;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            gap: 2rem;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            max-width: 900px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        span { font-size: 0.8rem; color: #94a3b8; }
+
+        /* BASE BUTTON STYLES */
+        button {
+            position: relative;
+            padding: 15px 35px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            outline: none;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: #1e293b;
+            color: white;
+        }
+
+        /* 1. RIPPLE EFFECT (JS-BASED) */
+        .btn-ripple {
+            background-color: var(--btn-primary);
+        }
+
+        .ripple {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            border-radius: 50%;
+            animation: ripple-animation 0.6s linear;
+        }
+
+        @keyframes ripple-animation {
+            from { width: 0; height: 0; opacity: 0.5; }
+            to { width: 500px; height: 500px; opacity: 0; }
+        }
+
+        /* 2. GLOW EFFECT */
+        .btn-glow:hover {
+            background: var(--glow-color);
+            box-shadow: 0 0 20px var(--glow-color), 0 0 60px var(--glow-color);
+        }
+
+        /* 3. NEON BORDER EFFECT */
+        .btn-neon {
+            background: transparent;
+            color: var(--neon-color);
+            border: 2px solid var(--neon-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .btn-neon:hover {
+            background: var(--neon-color);
+            color: #000;
+            box-shadow: 0 0 10px var(--neon-color), 0 0 40px var(--neon-color), 0 0 80px var(--neon-color);
+        }
+
+        /* 4. 3D PRESS EFFECT */
+        .btn-3d {
+            background: #e11d48;
+            border-bottom: 6px solid #9f1239;
+            transform: translateY(-4px);
+        }
+
+        .btn-3d:active {
+            transform: translateY(0px);
+            border-bottom: 2px solid #9f1239;
+        }
+
+        /* 5. GRADIENT TRANSITION */
+        .btn-gradient {
+            background: linear-gradient(45deg, #f59e0b, #ef4444, #8b5cf6);
+            background-size: 200% auto;
+            transition: 0.5s;
+        }
+
+        .btn-gradient:hover {
+            background-position: right center;
+        }
+
+        /* 6. FILL EFFECT (SLIDE) */
+        .btn-fill {
+            background: transparent;
+            border: 2px solid white;
+            z-index: 1;
+        }
+
+        .btn-fill::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 0; height: 100%;
+            background: white;
+            z-index: -1;
+            transition: width 0.3s ease;
+        }
+
+        .btn-fill:hover { color: black; }
+        .btn-fill:hover::before { width: 100%; }
+
+    </style>
+</head>
+<body>
+
+    <h1>Button Animation Gallery</h1>
+
+    <div class="gallery">
+        <div class="btn-container">
+            <button class="btn-ripple">Click Me</button>
+            <span>Ripple Effect</span>
+        </div>
+
+        <div class="btn-container">
+            <button class="btn-glow">Hover Me</button>
+            <span>Glow Effect</span>
+        </div>
+
+        <div class="btn-container">
+            <button class="btn-neon">Neon</button>
+            <span>Neon Light</span>
+        </div>
+
+        <div class="btn-container">
+            <button class="btn-3d">Push Me</button>
+            <span>3D Press</span>
+        </div>
+
+        <div class="btn-container">
+            <button class="btn-gradient">Gradient</button>
+            <span>Transition</span>
+        </div>
+
+        <div class="btn-container">
+            <button class="btn-fill">Slide In</button>
+            <span>Fill Effect</span>
+        </div>
+    </div>
+
+    <script>
+        // JS for Ripple Effect
+        const rippleButtons = document.querySelectorAll('.btn-ripple');
+        
+        rippleButtons.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                let x = e.clientX - e.target.offsetLeft;
+                let y = e.clientY - e.target.offsetTop;
+
+                let ripples = document.createElement('span');
+                ripples.classList.add('ripple');
+                ripples.style.left = x + 'px';
+                ripples.style.top = y + 'px';
+                this.appendChild(ripples);
+
+                setTimeout(() => {
+                    ripples.remove();
+                }, 600);
+            });
+        });
+    </script>
+</body>
+</html>
