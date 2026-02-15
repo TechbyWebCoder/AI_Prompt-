@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Animation Gallery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 50px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .button-label {
+            color: white;
+            font-size: 0.9em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Ripple Effect */
+        .ripple-btn {
+            background: #3498db;
+            color: white;
+        }
+
+        .ripple-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.5);
+        }
+
+        .ripple-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .ripple-btn:active::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Glow Effect */
+        .glow-btn {
+            background: #e74c3c;
+            color: white;
+            box-shadow: 0 0 20px rgba(231, 76, 60, 0.5);
+        }
+
+        .glow-btn:hover {
+            box-shadow: 0 0 40px rgba(231, 76, 60, 0.8),
+                        0 0 60px rgba(231, 76, 60, 0.6),
+                        0 0 80px rgba(231, 76, 60, 0.4);
+            transform: scale(1.05);
+        }
+
+        /* Neon Effect */
+        .neon-btn {
+            background: transparent;
+            color: #00ff88;
+            border: 2px solid #00ff88;
+            text-shadow: 0 0 10px #00ff88;
+        }
+
+        .neon-btn:hover {
+            background: #00ff88;
+            color: #000;
+            text-shadow: none;
+            box-shadow: 0 0 30px #00ff88,
+                        0 0 60px #00ff88,
+                        inset 0 0 20px #00ff88;
+            animation: neonPulse 1.5s infinite;
+        }
+
+        @keyframes neonPulse {
+            0%, 100% {
+                box-shadow: 0 0 30px #00ff88,
+                            0 0 60px #00ff88,
+                            inset 0 0 20px #00ff88;
+            }
+            50% {
+                box-shadow: 0 0 50px #00ff88,
+                            0 0 100px #00ff88,
+                            inset 0 0 40px #00ff88;
+            }
+        }
+
+        /* 3D Press Effect */
+        .press-btn {
+            background: linear-gradient(145deg, #f39c12, #e67e22);
+            color: white;
+            box-shadow: 0 8px 0 #c0392b,
+                        0 12px 20px rgba(0,0,0,0.3);
+            border-radius: 12px;
+        }
+
+        .press-btn:hover {
+            box-shadow: 0 6px 0 #c0392b,
+                        0 10px 15px rgba(0,0,0,0.3);
+            transform: translateY(2px);
+        }
+
+        .press-btn:active {
+            box-shadow: 0 2px 0 #c0392b,
+                        0 4px 8px rgba(0,0,0,0.3);
+            transform: translateY(6px);
+        }
+
+        /* Gradient Transition */
+        .gradient-btn {
+            background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            background-size: 200% 200%;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        .gradient-btn:hover {
+            animation: gradientShift 0.8s ease infinite;
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(245, 87, 108, 0.5);
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Slide Effect */
+        .slide-btn {
+            background: white;
+            color: #9b59b6;
+            border: 2px solid #9b59b6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .slide-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #9b59b6;
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .slide-btn:hover {
+            color: white;
+        }
+
+        .slide-btn:hover::before {
+            left: 0;
+        }
+
+        /* Bounce Effect */
+        .bounce-btn {
+            background: #16a085;
+            color: white;
+        }
+
+        .bounce-btn:hover {
+            animation: bounce 0.6s ease;
+            box-shadow: 0 10px 25px rgba(22, 160, 133, 0.5);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            25% { transform: translateY(-15px); }
+            50% { transform: translateY(-7px); }
+            75% { transform: translateY(-12px); }
+        }
+
+        /* Pulse Effect */
+        .pulse-btn {
+            background: #e91e63;
+            color: white;
+        }
+
+        .pulse-btn:hover {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(233, 30, 99, 0.7);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 15px rgba(233, 30, 99, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(233, 30, 99, 0);
+            }
+        }
+
+        /* Shimmer Effect */
+        .shimmer-btn {
+            background: linear-gradient(90deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shimmer-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            transform: rotate(45deg);
+            transition: all 0.6s;
+        }
+
+        .shimmer-btn:hover::after {
+            left: 100%;
+        }
+
+        /* Split Effect */
+        .split-btn {
+            background: #8e44ad;
+            color: white;
+            position: relative;
+        }
+
+        .split-btn::before,
+        .split-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: #9b59b6;
+            transition: transform 0.4s ease;
+            z-index: -1;
+        }
+
+        .split-btn::before {
+            left: 0;
+            transform: translateX(-100%);
+        }
+
+        .split-btn::after {
+            right: 0;
+            transform: translateX(100%);
+        }
+
+        .split-btn:hover::before {
+            transform: translateX(0);
+        }
+
+        .split-btn:hover::after {
+            transform: translateX(0);
+        }
+
+        /* Rotate Effect */
+        .rotate-btn {
+            background: #27ae60;
+            color: white;
+            transition: transform 0.6s ease, background 0.3s ease;
+        }
+
+        .rotate-btn:hover {
+            transform: rotateY(360deg);
+            background: #229954;
+            box-shadow: 0 10px 25px rgba(39, 174, 96, 0.5);
+        }
+
+        /* Liquid Effect */
+        .liquid-btn {
+            background: #3742fa;
+            color: white;
+            position: relative;
+        }
+
+        .liquid-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 40%;
+            transform: translateX(-50%);
+            transition: top 0.8s ease;
+        }
+
+        .liquid-btn:hover::before {
+            top: -120%;
+            animation: liquidWave 1.5s ease infinite;
+        }
+
+        @keyframes liquidWave {
+            0%, 100% { border-radius: 40% 60%; }
+            50% { border-radius: 60% 40%; }
+        }
+    </style>
+</head>
+<body>
+    <h1>✨ Creative Button Animation Gallery ✨</h1>
+    
+    <div class="gallery">
+        <div class="button-container">
+            <span class="button-label">Ripple Effect</span>
+            <button class="ripple-btn">Click Me</button>
+        </div>
+
+        <div class="button-container">
+            <span class="button-label">Glow Effect</span>
+            <button class="glow-btn">Hover Me</button>
+        </div>
+
+        <div class="button-container">
+            <span class="button-label">Neon Effect</span>
+            <button class="neon-btn">Neon Glow</button>
+        </div>
+
+        <div class="button-container">
+            <span class="button-label">3D Press</span>
+            <button class="press-btn">Press Me</button>
+        </div>
+
+        <div class="button-container">
+            <span class="button-label">Gradient Transition</span>
+            <button class="gradient-btn">Gradient Flow</button>
+        </div>
+
+        <div class="button-container">
+            <span class="button-label">Slide Effect</span>
+            <button class="slide-btn">Slide In</button>
+        </div>
+
+        <div class="button-container">
+            <span class="button-label">Bounce Effect</span>
+            <button class="bounce-btn">Bounce!</button>
+        </div>
+
+        <div class="button-container">
+            <span class="button-label">Pulse Effect</span>
+            <button class="pulse-btn">Pulse Beat</button>
+        </div>
+
+        <div class="button-container">
+            <span class="button-label">Shimmer Effect</span>
+            <button class="shimmer-btn">Shimmer</button>
+        </div>
+
+        <div class="button-container">
+            <span class="button-label">Split Effect</span>
+            <button class="split-btn">Split Open</button>
+        </div>
+
+        <div class="button-container">
+            <span class="button-label">Rotate Effect</span>
+            <button class="rotate-btn">Rotate 360°</button>
+        </div>
+
+        <div class="button-container">
+            <span class="button-label">Liquid Effect</span>
+            <button class="liquid-btn">Liquid Wave</button>
+        </div>
+    </div>
+</body>
+</html>
