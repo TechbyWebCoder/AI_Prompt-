@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Card Flip</title>
+    <style>
+        /* Center the card on the page */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f2f5;
+            font-family: sans-serif;
+            margin: 0;
+        }
+
+        /* 1. The Stage (Perspective) */
+        .card-container {
+            width: 300px;
+            height: 400px;
+            perspective: 1000px; 
+            cursor: pointer;
+        }
+
+        /* 2. The Inner Wrapper (Rotation) */
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+
+        /* Hover Trigger */
+        .card-container:hover .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* Click Trigger (via .flipped class) */
+        .card-container.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* 3. The Faces (Front & Back) */
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden; /* Important: hides the other side */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Front Side Styles */
+        .card-front {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        /* Back Side Styles */
+        .card-back {
+            background: #ffffff;
+            color: #333;
+            transform: rotateY(180deg); /* Pre-rotated so it faces away */
+            border: 2px solid #764ba2;
+        }
+
+        h2 { margin-bottom: 10px; }
+        p { opacity: 0.9; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div class="card-container" onclick="this.classList.toggle('flipped')">
+        <div class="card-inner">
+            
+            <div class="card-front">
+                <h2>Front Side</h2>
+                <p>Hover or Tap to see the magic</p>
+            </div>
+
+            <div class="card-back">
+                <h2>Back Side</h2>
+                <p>This content was hidden behind the card!</p>
+                <button style="margin-top: 20px; padding: 10px 20px; cursor: pointer;">Action</button>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
