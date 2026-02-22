@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Card Flip Animation</title>
+    <style>
+        /* Container for the card with perspective for 3D effect */
+        .card-container {
+            perspective: 1000px; /* Adds depth to the 3D space */
+            width: 300px;
+            height: 200px;
+            margin: 50px auto; /* Center the card */
+        }
+
+        /* The card itself, which will flip */
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 0.6s ease; /* Smooth flip animation */
+            transform-style: preserve-3d; /* Enables 3D transforms on children */
+        }
+
+        /* Front and back faces of the card */
+        .front, .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden; /* Hides the back side when facing away */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            border-radius: 10px;
+        }
+
+        .front {
+            background-color: #3498db; /* Blue for front */
+            z-index: 2; /* Ensure front is on top initially */
+        }
+
+        .back {
+            background-color: #e74c3c; /* Red for back */
+            transform: rotateY(180deg); /* Rotate back face 180deg initially */
+        }
+
+        /* Flip the card on hover */
+        .card-container:hover .card {
+            transform: rotateY(180deg);
+        }
+
+        /* For click-based flip (uncomment JavaScript below to enable) */
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="card-container">
+        <div class="card">
+            <div class="front">Front Content</div>
+            <div class="back">Back Content</div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript for click-based flip -->
+    <script>
+        const cardContainer = document.querySelector('.card-container');
+        cardContainer.addEventListener('click', () => {
+            const card = cardContainer.querySelector('.card');
+            card.classList.toggle('flipped');
+        });
+    </script>
+</body>
+</html>
