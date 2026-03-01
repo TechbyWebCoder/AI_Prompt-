@@ -1,0 +1,3 @@
+9️⃣ CSS Loader Animations
+
+Build a collection of animated loaders using pure CSS including spinner, dots, bars, and circular loaders with smooth infinite animations.
