@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pure CSS Loaders Collection</title>
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --loader-size: 48px;
+            --animation-speed: 1s;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+            margin: 0;
+        }
+
+        h1 { margin-bottom: 40px; font-weight: 600; }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .loader-card {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .loader-card span {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #64748b;
+        }
+
+        /* --- 1. CLASSIC SPINNER --- */
+        .spinner {
+            width: var(--loader-size);
+            height: var(--loader-size);
+            border: 5px solid #e2e8f0;
+            border-bottom-color: var(--primary-color);
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation var(--animation-speed) linear infinite;
+        }
+
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* --- 2. BOUNCING DOTS --- */
+        .dots {
+            width: calc(var(--loader-size) * 1.5);
+            height: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .dots div {
+            width: 12px;
+            height: 12px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            animation: bounce var(--animation-speed) ease-in-out infinite;
+        }
+
+        .dots div:nth-child(2) { animation-delay: 0.2s; }
+        .dots div:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* --- 3. WAVE BARS --- */
+        .bars {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: var(--loader-size);
+        }
+
+        .bars div {
+            width: 6px;
+            height: 20px;
+            background: var(--primary-color);
+            animation: grow var(--animation-speed) ease-in-out infinite;
+        }
+
+        .bars div:nth-child(1) { animation-delay: -0.4s; }
+        .bars div:nth-child(2) { animation-delay: -0.3s; }
+        .bars div:nth-child(3) { animation-delay: -0.2s; }
+        .bars div:nth-child(4) { animation-delay: -0.1s; }
+
+        @keyframes grow {
+            0%, 80%, 100% { transform: scaleY(1); }
+            40% { transform: scaleY(2.5); }
+        }
+
+        /* --- 4. SMOOTH CIRCULAR (SWEEP) --- */
+        .circular {
+            width: var(--loader-size);
+            height: var(--loader-size);
+            border-radius: 50%;
+            position: relative;
+            animation: rotate-circular 2s linear infinite;
+        }
+
+        .circular::before {
+            content: "";
+            box-sizing: border-box;
+            position: absolute;
+            inset: 0px;
+            border-radius: 50%;
+            border: 5px solid var(--primary-color);
+            animation: circular-stretch 1.5s ease-in-out infinite;
+        }
+
+        @keyframes rotate-circular {
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes circular-stretch {
+            0% { clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0); }
+            25% { clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0); }
+            50% { clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%); }
+            75% { clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%); }
+            100% { clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 0); }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Pure CSS Loaders</h1>
+
+    <div class="container">
+        <div class="loader-card">
+            <div class="spinner"></div>
+            <span>Spinner</span>
+        </div>
+
+        <div class="loader-card">
+            <div class="dots">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <span>Bouncing Dots</span>
+        </div>
+
+        <div class="loader-card">
+            <div class="bars">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <span>Wave Bars</span>
+        </div>
+
+        <div class="loader-card">
+            <div class="circular"></div>
+            <span>Circular Sweep</span>
+        </div>
+    </div>
+
+</body>
+</html>
