@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pure CSS Animated Loaders</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ---------- Global Styles ---------- */
+* {
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: #0f172a;
+    color: #fff;
+    padding: 40px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+}
+
+.loader-box {
+    background: #020617;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.loader-box p {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #94a3b8;
+}
+
+/* ---------- Spinner Loader ---------- */
+.spinner {
+    width: 45px;
+    height: 45px;
+    border: 4px solid rgba(255,255,255,0.2);
+    border-top: 4px solid #38bdf8;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: auto;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* ---------- Dots Loader ---------- */
+.dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+}
+
+.dots span {
+    width: 10px;
+    height: 10px;
+    background: #38bdf8;
+    border-radius: 50%;
+    animation: bounce 0.6s infinite alternate;
+}
+
+.dots span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+.dots span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+    from { transform: translateY(0); opacity: 0.5; }
+    to { transform: translateY(-12px); opacity: 1; }
+}
+
+/* ---------- Bars Loader ---------- */
+.bars {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.bars span {
+    width: 6px;
+    height: 30px;
+    background: #38bdf8;
+    animation: bars 1s infinite ease-in-out;
+}
+
+.bars span:nth-child(2) { animation-delay: 0.1s; }
+.bars span:nth-child(3) { animation-delay: 0.2s; }
+.bars span:nth-child(4) { animation-delay: 0.3s; }
+.bars span:nth-child(5) { animation-delay: 0.4s; }
+
+@keyframes bars {
+    0%, 40%, 100% {
+        transform: scaleY(0.4);
+    }
+    20% {
+        transform: scaleY(1);
+    }
+}
+
+/* ---------- Circular Ring Loader ---------- */
+.ring {
+    width: 48px;
+    height: 48px;
+    border: 4px solid transparent;
+    border-top: 4px solid #38bdf8;
+    border-right: 4px solid #38bdf8;
+    border-radius: 50%;
+    animation: spin 1.2s linear infinite;
+    margin: auto;
+}
+
+/* ---------- Pulse Loader ---------- */
+.pulse {
+    width: 40px;
+    height: 40px;
+    background: #38bdf8;
+    border-radius: 50%;
+    animation: pulse 1.5s infinite ease-in-out;
+    margin: auto;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.7;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.8);
+        opacity: 0.7;
+    }
+}
+
+/* ---------- Dual Circle Loader ---------- */
+.dual-circle {
+    position: relative;
+    width: 45px;
+    height: 45px;
+    margin: auto;
+}
+
+.dual-circle::before,
+.dual-circle::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 4px solid transparent;
+    border-top-color: #38bdf8;
+    animation: spin 1.2s linear infinite;
+}
+
+.dual-circle::after {
+    border-top-color: #0ea5e9;
+    animation-direction: reverse;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Pure CSS Animated Loaders</h1>
+
+<div class="container">
+
+    <div class="loader-box">
+        <div class="spinner"></div>
+        <p>Spinner Loader</p>
+    </div>
+
+    <div class="loader-box">
+        <div class="dots">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <p>Bouncing Dots</p>
+    </div>
+
+    <div class="loader-box">
+        <div class="bars">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <p>Bars Loader</p>
+    </div>
+
+    <div class="loader-box">
+        <div class="ring"></div>
+        <p>Circular Ring</p>
+    </div>
+
+    <div class="loader-box">
+        <div class="pulse"></div>
+        <p>Pulse Loader</p>
+    </div>
+
+    <div class="loader-box">
+        <div class="dual-circle"></div>
+        <p>Dual Circular Loader</p>
+    </div>
+
+</div>
+
+</body>
+</html>
