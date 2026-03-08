@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Advanced Custom Cursor</title>
+<style>
+/* Hide default cursor */
+* {
+  cursor: none;
+}
+
+body {
+  height: 200vh;
+  background: #0f172a;
+  font-family: system-ui, sans-serif;
+  color: white;
+  padding: 60px;
+}
+
+/* Demo elements */
+button, a {
+  display: inline-block;
+  margin: 20px;
+  padding: 14px 28px;
+  background: #6366f1;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+/* Cursor base */
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: white;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  transition:
+    width 0.25s ease,
+    height 0.25s ease,
+    border-radius 0.25s ease,
+    background 0.25s ease,
+    transform 0.15s ease;
+}
+
+/* Outer ring */
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  border: 2px solid rgba(255,255,255,0.6);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 9998;
+  transition:
+    width 0.3s ease,
+    height 0.3s ease,
+    border-radius 0.3s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+/* Hover state */
+.cursor.hover {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: #a5b4fc;
+}
+
+.cursor-ring.hover {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  opacity: 0.4;
+}
+
+/* Click effect */
+.cursor.click {
+  transform: translate(-50%, -50%) scale(0.7);
+}
+
+/* Shape modes */
+.cursor.square {
+  border-radius: 4px;
+}
+
+.cursor.dot {
+  width: 6px;
+  height: 6px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Custom Cursor Animation</h1>
+<p>Hover buttons, click, and move around.</p>
+
+<button>Button</button>
+<a href="#">Link</a>
+
+<div class="cursor"></div>
+<div class="cursor-ring"></div>
+
+<script>
+const cursor = document.querySelector('.cursor');
+const ring = document.querySelector('.cursor-ring');
+
+let mouseX = 0, mouseY = 0;
+let ringX = 0, ringY = 0;
+
+// Mouse move
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+
+  cursor.style.left = mouseX + 'px';
+  cursor.style.top = mouseY + 'px';
+});
+
+// Smooth ring follow
+function animate() {
+  ringX += (mouseX - ringX) * 0.12;
+  ringY += (mouseY - ringY) * 0.12;
+
+  ring.style.left = ringX + 'px';
+  ring.style.top = ringY + 'px';
+
+  requestAnimationFrame(animate);
+}
+animate();
+
+// Hover detection
+document.querySelectorAll('button, a').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.classList.add('hover');
+    ring.classList.add('hover');
+  });
+
+  el.addEventListener('mouseleave', () => {
+    cursor.classList.remove('hover');
+    ring.classList.remove('hover');
+  });
+});
+
+// Click animation
+document.addEventListener('mousedown', () => {
+  cursor.classList.add('click');
+});
+
+document.addEventListener('mouseup', () => {
+  cursor.classList.remove('click');
+});
+
+// Dynamic shape change based on speed
+let lastX = 0, lastY = 0;
+document.addEventListener('mousemove', e => {
+  const dx = e.clientX - lastX;
+  const dy = e.clientY - lastY;
+  const speed = Math.sqrt(dx * dx + dy * dy);
+
+  cursor.classList.remove('square', 'dot');
+
+  if (speed > 30) cursor.classList.add('square');
+  else if (speed < 2) cursor.classList.add('dot');
+
+  lastX = e.clientX;
+  lastY = e.clientY;
+});
+</script>
+
+</body>
+</html>
