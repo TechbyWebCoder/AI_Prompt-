@@ -1,0 +1,3 @@
+🔟 Cursor Animation Effects
+
+Develop custom cursor animations that follow the mouse, expand on hover, and change shape dynamically.
