@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Custom Cursor</title>
+    <style>
+        :root {
+            --cursor-color: #ff4757;
+            --bg-color: #0f172a;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            cursor: none; /* Hide the default system cursor */
+            overflow: hidden;
+        }
+
+        /* The Main Dot */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--cursor-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none; /* Let clicks pass through */
+            transition: transform 0.1s ease-out;
+        }
+
+        /* The Animated Outline */
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--cursor-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            z-index: 9998;
+            pointer-events: none;
+            transition: all 0.2s ease-out; /* Smoothly follows and expands */
+        }
+
+        /* Hover States */
+        .cursor-outline.hovered {
+            width: 65px;
+            height: 65px;
+            background-color: rgba(255, 71, 87, 0.1);
+            border-radius: 12px; /* Changes shape to a rounded square */
+        }
+
+        .cursor-dot.hovered {
+            transform: scale(2);
+        }
+
+        /* Demo UI Elements */
+        .container {
+            text-align: center;
+            color: white;
+        }
+
+        .hover-target {
+            padding: 20px 40px;
+            border: 2px solid white;
+            background: transparent;
+            color: white;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            cursor: none;
+        }
+
+        p {
+            opacity: 0.6;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cursor-dot" data-cursor-dot></div>
+    <div class="cursor-outline" data-cursor-outline></div>
+
+    <div class="container">
+        <h1>Move Your Mouse</h1>
+        <button class="hover-target">Hover Over Me</button>
+        <p>The cursor will expand and change shape.</p>
+    </div>
+
+    <script>
+        const cursorDot = document.querySelector("[data-cursor-dot]");
+        const cursorOutline = document.querySelector("[data-cursor-outline]");
+        const hoverTargets = document.querySelectorAll(".hover-target");
+
+        // 1. Move the cursor with the mouse
+        window.addEventListener("mousemove", (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            // Positioning the dot (centered)
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            // Positioning the outline (centered)
+            // We use animate() for high-performance hardware acceleration
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+
+            // Offset to center the elements on the mouse tip
+            cursorDot.style.transform = `translate(-50%, -50%)`;
+            cursorOutline.style.transform = `translate(-50%, -50%)`;
+        });
+
+        // 2. Expand and Change Shape on Hover
+        hoverTargets.forEach(target => {
+            target.addEventListener("mouseenter", () => {
+                cursorDot.classList.add("hovered");
+                cursorOutline.classList.add("hovered");
+            });
+
+            target.addEventListener("mouseleave", () => {
+                cursorDot.classList.remove("hovered");
+                cursorOutline.classList.remove("hovered");
+            });
+        });
+    </script>
+</body>
+</html>

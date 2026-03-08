@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Cursor Example</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: #f0f0f0;
+            cursor: none; /* Hide default cursor */
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            transition: width 0.3s ease, height 0.3s ease, border-radius 0.3s ease, background-color 0.3s ease;
+            z-index: 9999;
+        }
+
+        .cursor.expand {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 0, 0, 0.8); /* Change color on expand for dynamic feel */
+        }
+
+        .cursor.square {
+            border-radius: 0;
+        }
+
+        a {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px;
+            transition: background 0.3s;
+        }
+
+        a:hover {
+            background: #0056b3;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: none; /* Ensure no default cursor */
+            margin: 10px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+    <h1>Custom Cursor Demo</h1>
+    <p>Move your mouse around the page.</p>
+    <a href="#">Hover over this link (expands cursor)</a>
+    <button>Hover over this button (expands and changes to square)</button>
+
+    <div class="cursor"></div>
+
+    <script>
+        const cursor = document.querySelector('.cursor');
+
+        // Follow mouse
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = `${e.clientX}px`;
+            cursor.style.top = `${e.clientY}px`;
+        });
+
+        // Expand on hover over links
+        const links = document.querySelectorAll('a');
+        links.forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                cursor.classList.add('expand');
+            });
+            link.addEventListener('mouseleave', () => {
+                cursor.classList.remove('expand');
+            });
+        });
+
+        // Expand and change shape on hover over buttons
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                cursor.classList.add('expand', 'square');
+            });
+            button.addEventListener('mouseleave', () => {
+                cursor.classList.remove('expand', 'square');
+            });
+        });
+
+        // Optional: Dynamic shape change on click (cycles between circle and square)
+        let isSquare = false;
+        document.addEventListener('click', () => {
+            isSquare = !isSquare;
+            if (isSquare) {
+                cursor.classList.add('square');
+            } else {
+                cursor.classList.remove('square');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Cursor Animations</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            cursor: none;
+        }
+
+        .cursor-dot {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            background: #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.2s ease;
+        }
+
+        .cursor-ring {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.2s ease;
+        }
+
+        .cursor-trail {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9997;
+            border-radius: 50%;
+        }
+
+        .interactive-zone {
+            position: relative;
+            width: 90%;
+            max-width: 900px;
+            height: 80vh;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            color: white;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        button, a {
+            padding: 14px 32px;
+            font-size: 1em;
+            border: 2px solid white;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 50px;
+            cursor: none;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        button:hover, a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 30px;
+            border-radius: 20px;
+            cursor: none;
+            transition: all 0.3s ease;
+            width: 250px;
+            text-align: center;
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-10px);
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .card p {
+            font-size: 0.9em;
+        }
+
+        .cards-container {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .shape-indicator {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px 25px;
+            border-radius: 50px;
+            color: white;
+            font-size: 0.9em;
+            z-index: 9900;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="interactive-zone">
+        <h1>✨ Custom Cursor Magic</h1>
+        <p>Move your mouse around and hover over elements to see dynamic cursor animations. The cursor adapts its shape, expands on hover, and leaves a smooth trail.</p>
+        
+        <div class="button-group">
+            <button>Button 1</button>
+            <button>Button 2</button>
+            <a href="#">Link</a>
+        </div>
+
+        <div class="cards-container">
+            <div class="card">
+                <h3>Interactive</h3>
+                <p>Hover over any element to expand the cursor</p>
+            </div>
+            <div class="card">
+                <h3>Dynamic</h3>
+                <p>Shape changes based on element type</p>
+            </div>
+            <div class="card">
+                <h3>Smooth</h3>
+                <p>Trail follows your mouse movement</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="shape-indicator">Current Shape: <span id="shapeText">Default</span></div>
+
+    <script>
+        const cursorDot = document.createElement('div');
+        cursorDot.className = 'cursor-dot';
+        document.body.appendChild(cursorDot);
+
+        const cursorRing = document.createElement('div');
+        cursorRing.className = 'cursor-ring';
+        document.body.appendChild(cursorRing);
+
+        let mouseX = 0;
+        let mouseY = 0;
+        let dotX = 0;
+        let dotY = 0;
+        let ringX = 0;
+        let ringY = 0;
+
+        const trails = [];
+        let currentShape = 'Default';
+        const shapeText = document.getElementById('shapeText');
+
+        // Update cursor position
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            // Create trail effect
+            if (Math.random() > 0.6) {
+                createTrail(mouseX, mouseY);
+            }
+
+            // Determine cursor shape based on target
+            updateCursorShape(e.target);
+        });
+
+        // Animate dot and ring with easing
+        function animateCursor() {
+            dotX += (mouseX - dotX) * 0.3;
+            dotY += (mouseY - dotY) * 0.3;
+            ringX += (mouseX - ringX) * 0.15;
+            ringY += (mouseY - ringY) * 0.15;
+
+            cursorDot.style.left = dotX + 'px';
+            cursorDot.style.top = dotY + 'px';
+            cursorRing.style.left = ringX + 'px';
+            cursorRing.style.top = ringY + 'px';
+
+            updateTrails();
+            requestAnimationFrame(animateCursor);
+        }
+
+        // Create trail particles
+        function createTrail(x, y) {
+            const trail = document.createElement('div');
+            trail.className = 'cursor-trail';
+            trail.style.width = '8px';
+            trail.style.height = '8px';
+            trail.style.background = `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.3})`;
+            trail.style.left = x + 'px';
+            trail.style.top = y + 'px';
+            trail.style.opacity = 1;
+            document.body.appendChild(trail);
+
+            trails.push({
+                el: trail,
+                x: x,
+                y: y,
+                vx: (Math.random() - 0.5) * 4,
+                vy: (Math.random() - 0.5) * 4,
+                life: 1
+            });
+        }
+
+        // Update trail particles
+        function updateTrails() {
+            for (let i = trails.length - 1; i >= 0; i--) {
+                const t = trails[i];
+                t.life -= 0.02;
+
+                if (t.life <= 0) {
+                    t.el.remove();
+                    trails.splice(i, 1);
+                } else {
+                    t.x += t.vx;
+                    t.y += t.vy;
+                    t.vy += 0.1; // gravity
+                    t.el.style.left = t.x + 'px';
+                    t.el.style.top = t.y + 'px';
+                    t.el.style.opacity = t.life;
+                }
+            }
+        }
+
+        // Update cursor shape based on element
+        function updateCursorShape(target) {
+            if (target.tagName === 'BUTTON' || target.tagName === 'A') {
+                setCursorShape('Click', 55, 'rgba(255, 255, 255, 0.8)');
+            } else if (target.classList.contains('card')) {
+                setCursorShape('Hover', 50, 'rgba(200, 255, 200, 0.7)');
+            } else if (target.classList.contains('interactive-zone') || target.tagName === 'BODY') {
+                setCursorShape('Default', 40, 'rgba(255, 255, 255, 0.6)');
+            }
+        }
+
+        // Set cursor appearance
+        function setCursorShape(shapeName, ringSize, ringColor) {
+            currentShape = shapeName;
+            shapeText.textContent = shapeName;
+            cursorRing.style.width = ringSize + 'px';
+            cursorRing.style.height = ringSize + 'px';
+            cursorRing.style.borderColor = ringColor;
+        }
+
+        // Handle mouse enter/leave for interactive elements
+        document.querySelectorAll('button, a, .card').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorDot.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                cursorRing.style.transform = 'translate(-50%, -50%) scale(1.3)';
+            });
+
+            el.addEventListener('mouseleave', () => {
+                cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursorRing.style.transform = 'translate(-50%, -50%) scale(1)';
+            });
+        });
+
+        // Hide/show cursor on window focus change
+        document.addEventListener('mouseleave', () => {
+            cursorDot.style.opacity = '0';
+            cursorRing.style.opacity = '0';
+        });
+
+        document.addEventListener('mouseenter', () => {
+            cursorDot.style.opacity = '1';
+            cursorRing.style.opacity = '1';
+        });
+
+        // Start animation loop
+        animateCursor();
+    </script>
+</body>
+</html>
