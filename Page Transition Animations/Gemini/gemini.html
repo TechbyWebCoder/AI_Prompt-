@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smooth Page Transitions</title>
+    <style>
+        /* 1. Basic Reset & Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #121212;
+            color: white;
+            overflow: hidden; /* Prevents scrollbars during animation */
+        }
+
+        /* 2. Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            background: #1f1f1f;
+            padding: 1rem;
+            z-index: 10;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        nav a {
+            color: #bbb;
+            text-decoration: none;
+            margin: 0 1.5rem;
+            font-weight: bold;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            color: #00d4ff;
+        }
+
+        /* 3. Content Area Setup */
+        #content-area {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        /* 4. Animation Classes */
+        .page.active {
+            display: flex;
+            animation: slideIn 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        .page.exit {
+            display: flex;
+            animation: slideOut 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        /* 5. Keyframes */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(-100px) scale(0.95);
+            }
+        }
+
+        /* Section Specific Colors */
+        #home { background: linear-gradient(135deg, #1e3c72, #2a5298); }
+        #about { background: linear-gradient(135deg, #2c3e50, #4ca1af); }
+        #contact { background: linear-gradient(135deg, #833ab4, #fd1d1d); }
+
+        h1 { font-size: 3.5rem; margin-bottom: 1rem; }
+        p { font-size: 1.2rem; opacity: 0.8; max-width: 600px; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a data-target="home">Home</a>
+        <a data-target="about">About</a>
+        <a data-target="contact">Contact</a>
+    </nav>
+
+    <main id="content-area">
+        <section id="home" class="page active">
+            <h1>Home Page</h1>
+            <p>Welcome to the main dashboard. Notice how the content slides smoothly when you navigate.</p>
+        </section>
+
+        <section id="about" class="page">
+            <h1>About Us</h1>
+            <p>This is the section where we talk about our mission, vision, and the tech stack used for these transitions.</p>
+        </section>
+
+        <section id="contact" class="page">
+            <h1>Contact</h1>
+            <p>Reach out to us via email or social media. We are always ready to collaborate on new projects.</p>
+        </section>
+    </main>
+
+    <script>
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                const targetId = link.getAttribute('data-target');
+                const currentPage = document.querySelector('.page.active');
+                const targetPage = document.getElementById(targetId);
+
+                // Prevent transition if clicking the current active link
+                if (currentPage.id === targetId) return;
+
+                // 1. Start the exit animation for current page
+                currentPage.classList.remove('active');
+                currentPage.classList.add('exit');
+
+                // 2. After the animation duration, clean up and switch
+                setTimeout(() => {
+                    currentPage.classList.remove('exit');
+                    
+                    // 3. Start the entry animation for target page
+                    targetPage.classList.add('active');
+                }, 600); // This timeout should match the CSS animation duration
+            });
+        });
+    </script>
+</body>
+</html>
