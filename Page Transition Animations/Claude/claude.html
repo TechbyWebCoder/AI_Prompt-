@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Beautiful Page Transitions</title>
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0d0d0f;
+      --surface: #16161a;
+      --accent: #e8e0d0;
+      --muted: #6b6b7a;
+      --pop: #c4a882;
+      --border: rgba(255,255,255,0.08);
+      --h: 'DM Serif Display', serif;
+      --m: 'DM Mono', monospace;
+    }
+
+    #app {
+      background: var(--bg);
+      border-radius: 12px;
+      overflow: hidden;
+      font-family: var(--m);
+      color: var(--accent);
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      max-width: 980px;
+      margin: 40px auto;
+    }
+
+    #viewport {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 3rem 3.5rem;
+      will-change: transform, opacity;
+      backface-visibility: hidden;
+    }
+
+    .page-label {
+      font-size: 11px;
+      letter-spacing: .2em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .page-title {
+      font-family: var(--h);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      line-height: 1.05;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+      font-weight: 400;
+    }
+
+    .page-title em {
+      font-style: italic;
+      color: var(--pop);
+    }
+
+    .page-body {
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 440px;
+    }
+
+    .page-visual {
+      position: absolute;
+      right: 3rem;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: .12;
+      font-family: var(--h);
+      font-size: clamp(5rem, 15vw, 10rem);
+      font-style: italic;
+      color: var(--accent);
+      user-select: none;
+      letter-spacing: -.04em;
+      pointer-events: none;
+    }
+
+    #controls {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .ctrl-group {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .ctrl-label {
+      font-size: 11px;
+      letter-spacing: .12em;
+      color: var(--muted);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--accent);
+      font-family: var(--m);
+      font-size: 11px;
+      padding: 6px 14px;
+      cursor: pointer;
+      border-radius: 4px;
+      letter-spacing: .08em;
+      transition: background .15s, border-color .15s;
+    }
+
+    .btn:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    .btn.active {
+      border-color: var(--pop);
+      color: var(--pop);
+    }
+
+    .nav-btn {
+      width: 32px;
+      height: 32px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--accent);
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .15s;
+    }
+
+    .nav-btn:hover {
+      background: rgba(255,255,255,0.08);
+    }
+
+    .nav-btn:disabled {
+      opacity: .25;
+      cursor: default;
+    }
+
+    #progress {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-left: auto;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: background .3s, transform .3s;
+      cursor: pointer;
+    }
+
+    .dot.active {
+      background: var(--pop);
+      transform: scale(1.4);
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .curtain {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+      height: 100%;
+      background: var(--pop);
+      transform: scaleX(0);
+      transform-origin: left;
+      z-index: 20;
+    }
+
+    .curtain.right {
+      left: 50%;
+      transform-origin: right;
+    }
+
+    .shimmer-line {
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--pop), transparent);
+      z-index: 30;
+    }
+  </style>
+</head>
+<body style="background:#0a0a0c; padding:20px; font-family:sans-serif;">
+
+  <div id="app" role="main" aria-label="Page transition animation demo">
+    
+    <div id="viewport">
+      <!-- Page 0 -->
+      <div class="page" id="p0" style="background:#0d0d0f">
+        <div class="page-label">01 / Introduction</div>
+        <div class="page-title">Motion gives<br>meaning to <em>design.</em></div>
+        <div class="page-body">Transitions aren't decoration — they communicate spatial relationships, direct attention, and tell the story of where you've been and where you're going.</div>
+        <div class="page-visual">01</div>
+      </div>
+
+      <!-- Page 1 -->
+      <div class="page" id="p1" style="background:#0f0f11">
+        <div class="page-label">02 / Slide</div>
+        <div class="page-title">Pages <em>slide</em><br>into place.</div>
+        <div class="page-body">The classic push transition. Content enters from the opposite direction the user navigates — intuitive, clear, and spatial. Works best for sequential content with a clear order.</div>
+        <div class="page-visual">02</div>
+      </div>
+
+      <!-- Page 2 -->
+      <div class="page" id="p2" style="background:#0d0f0f">
+        <div class="page-label">03 / Curtain</div>
+        <div class="page-title">The <em>curtain</em><br>opens & closes.</div>
+        <div class="page-body">Two panels wipe in from the center, reveal a new scene, then retract. Theatrical and deliberate — great for portfolio pieces, onboarding, and narrative flows.</div>
+        <div class="page-visual">03</div>
+      </div>
+
+      <!-- Page 3 -->
+      <div class="page" id="p3" style="background:#0f0d0f">
+        <div class="page-label">04 / Crossfade</div>
+        <div class="page-title"><em>Dissolve</em> between<br>states softly.</div>
+        <div class="page-body">The gentlest transition. Content fades out while new content fades in simultaneously. Timeless, safe, and appropriate for most contexts.</div>
+        <div class="page-visual">04</div>
+      </div>
+
+      <!-- Page 4 -->
+      <div class="page" id="p4" style="background:#0f0f0d">
+        <div class="page-label">05 / Morph</div>
+        <div class="page-title">Scale, <em>clip,</em><br>and transform.</div>
+        <div class="page-body">The departing page shrinks and fades while the incoming page blooms from the center. Creates a sense of depth and hierarchy.</div>
+        <div class="page-visual">05</div>
+      </div>
+
+      <!-- Transition Elements -->
+      <div class="curtain" id="cl"></div>
+      <div class="curtain right" id="cr"></div>
+      <div class="shimmer-line" id="shimmer"></div>
+    </div>
+
+    <!-- Controls -->
+    <div id="controls">
+      <div class="ctrl-group">
+        <span class="ctrl-label">Transition</span>
+        <button class="btn active" id="t-slide">Slide</button>
+        <button class="btn" id="t-curtain">Curtain</button>
+        <button class="btn" id="t-fade">Crossfade</button>
+        <button class="btn" id="t-morph">Morph</button>
+      </div>
+      
+      <button class="nav-btn" id="prev" aria-label="Previous">←</button>
+      <button class="nav-btn" id="next" aria-label="Next">→</button>
+      
+      <div id="progress"></div>
+    </div>
+  </div>
+
+  <script>
+    const pages = document.querySelectorAll('.page');
+    const prog = document.getElementById('progress');
+    const N = pages.length;
+    let cur = 0;
+    let busy = false;
+    let type = 'slide';
+
+    function init() {
+      pages.forEach((p, i) => {
+        p.style.zIndex = 0;
+        if (i !== 0) p.style.transform = 'translateX(100%)';
+      });
+      pages[0].style.zIndex = 1;
+
+      // Create progress dots
+      for (let i = 0; i < N; i++) {
+        const d = document.createElement('div');
+        d.className = 'dot';
+        d.onclick = () => goTo(i);
+        prog.appendChild(d);
+      }
+
+      updateDots();
+      updateNavBtns();
+
+      // Add click listeners to transition buttons
+      document.getElementById('t-slide').addEventListener('click', () => setType('slide'));
+      document.getElementById('t-curtain').addEventListener('click', () => setType('curtain'));
+      document.getElementById('t-fade').addEventListener('click', () => setType('fade'));
+      document.getElementById('t-morph').addEventListener('click', () => setType('morph'));
+
+      // Navigation buttons
+      document.getElementById('prev').addEventListener('click', () => go(-1));
+      document.getElementById('next').addEventListener('click', () => go(1));
+    }
+
+    function updateDots() {
+      document.querySelectorAll('.dot').forEach((d, i) => {
+        d.classList.toggle('active', i === cur);
+      });
+    }
+
+    function updateNavBtns() {
+      document.getElementById('prev').disabled = cur === 0;
+      document.getElementById('next').disabled = cur === N - 1;
+    }
+
+    function setType(t) {
+      type = t;
+      document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('t-' + t).classList.add('active');
+    }
+
+    function go(dir) {
+      goTo(cur + dir);
+    }
+
+    function goTo(next) {
+      if (busy || next < 0 || next >= N || next === cur) return;
+      
+      busy = true;
+      const from = pages[cur];
+      const to = pages[next];
+      const dir = next > cur ? 1 : -1;
+      
+      cur = next;
+      updateDots();
+      updateNavBtns();
+
+      if (type === 'slide') doSlide(from, to, dir);
+      else if (type === 'curtain') doCurtain(from, to);
+      else if (type === 'fade') doFade(from, to);
+      else if (type === 'morph') doMorph(from, to, dir);
+    }
+
+    function ease(t) {
+      return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+    }
+
+    function animate(duration, update, done) {
+      const start = performance.now();
+      function frame(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        update(ease(progress));
+        if (progress < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          if (done) done();
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+
+    function resetPage(el) {
+      el.style.transform = '';
+      el.style.opacity = '';
+      el.style.clipPath = '';
+      el.style.zIndex = 0;
+    }
+
+    function doSlide(from, to, dir) {
+      to.style.transform = `translateX(${dir * 100}%)`;
+      to.style.zIndex = 2;
+      from.style.zIndex = 1;
+
+      animate(420, p => {
+        from.style.transform = `translateX(${-dir * p * 100}%)`;
+        to.style.transform = `translateX(${dir * (1 - p) * 100}%)`;
+      }, () => {
+        resetPage(from);
+        to.style.zIndex = 1;
+        busy = false;
+      });
+    }
+
+    function doCurtain(from, to) {
+      const cl = document.getElementById('cl');
+      const cr = document.getElementById('cr');
+
+      to.style.opacity = '0';
+      to.style.zIndex = 1;
+      from.style.zIndex = 1;
+
+      animate(260, p => {
+        cl.style.transform = `scaleX(${p})`;
+        cr.style.transform = `scaleX(${p})`;
+      }, () => {
+        to.style.opacity = '1';
+        from.style.opacity = '0';
+
+        animate(260, p => {
+          cl.style.transform = `scaleX(${1 - p})`;
+          cr.style.transform = `scaleX(${1 - p})`;
+        }, () => {
+          cl.style.transform = 'scaleX(0)';
+          cr.style.transform = 'scaleX(0)';
+          from.style.opacity = '';
+          resetPage(from);
+          busy = false;
+        });
+      });
+    }
+
+    function doFade(from, to) {
+      to.style.opacity = '0';
+      to.style.zIndex = 2;
+      from.style.zIndex = 1;
+
+      animate(380, p => {
+        from.style.opacity = `${1 - p}`;
+        to.style.opacity = `${p}`;
+      }, () => {
+        resetPage(from);
+        to.style.zIndex = 1;
+        busy = false;
+      });
+    }
+
+    function doMorph(from, to, dir) {
+      to.style.zIndex = 2;
+      from.style.zIndex = 1;
+      to.style.transform = 'scale(.92)';
+      to.style.opacity = '0';
+
+      animate(440, p => {
+        from.style.transform = `scale(${1 - p * 0.08})`;
+        from.style.opacity = `${1 - p}`;
+        to.style.transform = `scale(${0.92 + p * 0.08})`;
+        to.style.opacity = `${p}`;
+      }, () => {
+        resetPage(from);
+        to.style.zIndex = 1;
+        busy = false;
+      });
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') go(1);
+      else if (e.key === 'ArrowLeft') go(-1);
+    });
+
+    // Initialize everything
+    init();
+  </script>
+</body>
+</html>
